@@ -12,7 +12,7 @@ const HomeScreen = ({ navigation }) => {
             .then(response => response.json())
             .then((data) => {
 
-                // console.log(data)        
+                console.log(data)        
                 setRecipes(data.reverse())
             })
             .catch(err => console.log(err))

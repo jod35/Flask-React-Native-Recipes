@@ -20,7 +20,7 @@ const styles=StyleSheet.create({
         margin:10
     },
     recipeTitle:{
-        fontSize:20,
+        fontSize:30,
     }
 })
 
