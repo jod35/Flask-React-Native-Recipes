@@ -1,4 +1,4 @@
-from flask import Flask,request,jsonify
+from flask import Flask,request,jsonify,make_response
 from flask_restx import Api,Resource,fields
 from flask_cors import CORS
 from exts import db
@@ -43,20 +43,26 @@ class Recipes(Resource):
 
         return recipes,200
 
-
+    @api.expect(recipe_model)
     def post(self):
         """Create a recipe"""
 
 
         data=request.get_json()
 
-        new_recipe=Recipe(title=data.get('title'),
-                            description=data.get('description')
-        )
+        if data.get('title') and data.get('description'):
 
-        new_recipe.save()
 
-        return jsonify({"message":"Created a Recipe"})
+            new_recipe=Recipe(title=data.get('title'),
+                                description=data.get('description')
+            )
+
+            new_recipe.save()
+
+            return make_response(jsonify({"message":'Created'}),201)
+        
+        else:
+            return make_response(jsonify({"message":"Failed"}),400)
 
 
 @api.route('/recipe/<int:id>')

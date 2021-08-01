@@ -4,17 +4,18 @@ import { Text,TextInput ,View,StyleSheet,Button,Modal,Pressable} from 'react-nat
 
 
 const CreateRecipeScreen=()=>{
-  const [description,setDescription]=useState('');
-  const [title,setTitle]=useState('');  
+  const [description,setDescription]=useState('hello');
+  const [title,setTitle]=useState('text');  
   const [modalVisible,setModalVisible]=useState(false);
   const [serverResponse,setServerResponse]=useState('');
+  const [responseSucceeded,setResponseSucceeded]=useState(false)
 
  
 
   const handleSubmit=()=>{
     const newRecipe={
-      title:title,
-      description:description
+      title,
+      description
     }
 
     const requestOptions={
@@ -29,11 +30,17 @@ const CreateRecipeScreen=()=>{
     .then(response=>response.json())
     .then(data=>{
       setModalVisible(true)
-      console.log(data);
-      setServerResponse(data.message) 
+      
+      setServerResponse(data.message)
+
+
+      if(data.message == 'Created'){
+          console.log("Created")
+          setResponseSucceeded(true)
+      }
 
       setTitle('')
-      setDescription('')
+      setDescription('hello')
     })
     .then(error=>console.log(error))
   }
@@ -59,7 +66,11 @@ const CreateRecipeScreen=()=>{
             <Text style={styles.modalText}>{serverResponse}</Text>
             <Button
               style={[styles.button, styles.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}
+              onPress={() => {setModalVisible(!modalVisible)
+                        if(responseSucceeded){
+                            alert("proceed to payment")
+                        }
+              }}
               title="Hide Modal" 
             />
           </View>
